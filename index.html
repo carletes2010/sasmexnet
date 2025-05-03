@@ -47,21 +47,24 @@
     </div>
   </div>
 
-  <!-- jQuery & Bootstrap -->
+ <!-- 1) jQuery & Bootstrap JS -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/popper.js/dist/umd/popper.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-  <!-- Bibliotecas SASMEX -->
+  <!-- 2) sasmexlib: define window.sasmexlib -->
   <script src="js/sasmexlib.min.js"></script>
+
+  <!-- 3) Configuración y arranque de WS: usa window.sasmexlib -->
+  <script src="js/config.js"></script>
+
+  <!-- 4) Resto de librerías -->
   <script src="js/lib.min.js"></script>
   <script src="js/view.min.js"></script>
 
-  <!-- Configuración y arranque de WS -->
-  <script src="js/config.js"></script>
-
-  <!-- Lógica principal -->
+  <!-- 5) Tu lógica principal -->
   <script src="js/index.min.js"></script>
+
 
   <!-- Google Maps -->
   <script async defer
