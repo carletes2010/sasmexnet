@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monitor Público del SASMEX</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="bower_components/font-awsome/web-fonts-with-css/css/fontawesome-all.min.css" />
+  <link rel="stylesheet" href="css/mapa.min.css" />
+  <link rel="stylesheet" href="assets/fontello-cires/css/michel.css" />
+</head>
+<body>
+  <div id="map"></div>
+  <div id="leyenda"></div>
+  <div id="mensaje-div"></div>
+  <div id="lista_sismos"></div>
+  <div id="logo" class="flex-column">
+    <div class="d-flex justify-content-end align-items-center">
+      <img src="/img/sasmex-ciresac350.png"
+           sizes="20vw"
+           srcset="/img/sasmex-ciresac200.png 200w,
+                   /img/sasmex-ciresac350.png 350w,
+                   /img/sasmex-ciresac500.png 500w">
+    </div>
+  </div>
+  <div id="info-div" class="w-10"></div>
+  <div id="info-disclaimer">
+    <svg width="32" height="32">
+      <circle id="conectadoId" cx="16" cy="16" r="8"
+              style="stroke:#660000;stroke-width:2;fill:#cc0000;fill-opacity:0.8" />
+    </svg>
+    <h6 id="conectadoLabelId" style="color:red;">Desconectado</h6>
+    <p id="labelDiferenciaServId">[diferencia con servidor: 0s]</p>
+    <h5>
+      Monitor Oficial del SASNO.&nbsp;
+      <a href="#" data-toggle="modal" data-target="#informacion-modal-id">
+        <i class="fas fa-info-circle"></i>
+      </a>
+    </h5>
+    <p>&copy;2018 SASNO, AC Versión 1.1.0</p>
+  </div>
+  <div id="panel" class="m-2">
+    <div class="btn-toolbar center" role="toolbar" aria-label="Herramientas">
+      <div class="btn-group" role="group" aria-label="Herramientas1">
+        <!-- tus botones aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery & Bootstrap -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/popper.js/dist/umd/popper.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <!-- Bibliotecas SASMEX -->
+  <script src="js/sasmexlib.min.js"></script>
+  <script src="js/lib.min.js"></script>
+  <script src="js/view.min.js"></script>
+
+  <!-- Configuración y arranque de WS -->
+  <script src="js/config.js"></script>
+
+  <!-- Lógica principal -->
+  <script src="js/index.min.js"></script>
+
+  <!-- Google Maps -->
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBhTtDotZYO6n__XrgNINL_k57gxjMGDw&callback=initMap&libraries=geometry">
+  </script>
+</body>
+</html>
