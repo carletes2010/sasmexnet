@@ -1,54 +1,34 @@
 /* config.js */
 
 // 1) Define la configuración global
-window.configuracion = {
-  WebSocketClient: {
-    host:      "ws://localhost:2500",
-    url:       "MonitorSasmex",
-    protocolo: "public"
-  }
-};
-
-// 2) Auto-arranque tras cargar sasmexlib.min.js
-(function() {
-  function arrancar() {
-    if (!window.sasmexlib || !sasmexlib.WsClientService) {
-      return setTimeout(arrancar, 50);
+document.addEventListener('DOMContentLoaded', () => {
+  window.configuracion = {
+    WebSocketClient: {
+      host:      "ws://localhost:2500",
+      url:       "MonitorSasmex",
+      protocolo: "public"
     }
+  };
 
-    const cfg = window.configuracion.WebSocketClient;
-    console.log('[config] Configuración WS:', cfg);
+  const cfg = window.configuracion.WebSocketClient;
+  console.log('[config] WS config:', cfg);
 
-    // 3) Crear cliente WS (conecta internamente)
-    console.log('[config] Iniciando WebSocket:', cfg.host);
-    const wsClientService = new sasmexlib.WsClientService({
-      host:      cfg.host,
-      url:       cfg.url,
-      protocolo: cfg.protocolo
-    });
+  // 2) Crear WebSocket nativo
+  const socket = new WebSocket(cfg.host);
+  socket.addEventListener('open',    () => console.log('[WS] Connected to', cfg.host));
+  socket.addEventListener('error',   err => console.error('[WS] Error:', err));
+  socket.addEventListener('close',   ev  => console.warn('[WS] Closed:', ev));
+  socket.addEventListener('message', m   => console.log('[WS] Message:', m.data));
 
-    // 4) Diagnóstico de socket si existe
-    if (wsClientService.socket) {
-      wsClientService.socket.onopen = () => console.log('[WS] Conectado a', cfg.host);
-      wsClientService.socket.onerror = err => console.error('[WS] Error de conexión:', err);
-      wsClientService.socket.onclose = ev => console.warn('[WS] Conexión cerrada:', ev);
-      wsClientService.socket.onmessage = m => console.log('[WS] Mensaje recibido:', m.data);
-    } else {
-      console.warn('[config] No se encontró socket en wsClientService');
-    }
+  // 3) Instanciar procesador y PaqueteCires con socket manual
+  const ps = new sasmexlib.ProcessServicePublic();
+  new sasmexlib.PaqueteCires({
+    ws: {
+      send: msg => socket.send(JSON.stringify(msg)),
+      onmessage: handler => socket.addEventListener('message', ev => handler(JSON.parse(ev.data)))
+    },
+    decod: paquete => ps.procesar(paquete)
+  });
 
-    // 5) Crear procesador de paquetes
-    const ps = new sasmexlib.ProcessServicePublic();
-
-    // 6) Pasa ambos a PaqueteCires
-    new sasmexlib.PaqueteCires({
-      ws:    wsClientService,
-      decod: paquete => ps.procesar(paquete)
-    });
-
-    // 7) Exponer el procesador globalmente
-    window.procesarService = ps;
-  }
-
-  arrancar();
-})();
+  window.procesarService = ps;
+});
